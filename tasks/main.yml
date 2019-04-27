@@ -1,0 +1,48 @@
+---
+# tasks file for aws_recreate_ec2_from_snapshot
+- name: stopping host
+  ec2:
+    instance_id: "{{ aws_host_id }}"
+    state: stopped
+    wait: true
+- ec2_vol:
+    instance: "{{ aws_host_id }}"
+    state: list
+  register: mounted_volume
+- name: detatching volume
+  command: aws ec2 detach-volume --volume-id {{ mounted_volume.volumes[0].id }}
+- debug:
+    msg: detached {{ mounted_volume.volumes[0].id }} at {{ mounted_volume.volumes[0].attachment_set.device }}
+- name: removing volume
+  ec2_vol:
+    id: "{{ mounted_volume.volumes[0].id }}"
+    state: absent
+- debug:
+    msg: removed volume {{ mounted_volume.volumes[0].id }}
+- name: recreating EBS volume
+  ec2_vol:
+    instance: "{{ aws_host_id }}"
+    name: "{{ aws_inventory_name }}"
+    snapshot: "{{ aws_snapshot_id }}"
+    device_name: "{{ aws_device_name }}"
+    volume_type: "{{ aws_new_volume_type }}"
+- debug:
+    msg: recreated EBS volume from snapshot {{ aws_snapshot_id }}
+- name: restarting host
+  ec2:
+    instance_id: "{{ aws_host_id }}"
+    state: running
+    wait: true
+- ec2_vol:
+    instance: "{{ aws_host_id }}"
+    state: list
+  register: new_mounted_volume
+- debug:
+    msg: new volume {{ new_mounted_volume.volumes[0].id}} mounted at {{ new_mounted_volume.volumes[0].attachment_set.device }}
+- wait_for:
+    host: "{{ aws_host }}"
+    port: 22
+    timeout: 60
+- debug:
+    msg: host {{ aws_host }} restarted successfully and SSH is running...
+

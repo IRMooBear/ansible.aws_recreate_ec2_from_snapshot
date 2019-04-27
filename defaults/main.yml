@@ -1,0 +1,8 @@
+---
+# defaults file for aws_recreate_ec2_from_snapshot
+aws_host:
+aws_inventory_name:
+aws_host_id:
+aws_snapshot_id:
+aws_device_name: /dev/xvda
+aws_new_volume_type: gp2
