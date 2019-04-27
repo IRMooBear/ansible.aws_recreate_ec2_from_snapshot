@@ -1,17 +1,47 @@
-Role Name
+AWS recreate EC2 from snapshot
 =========
 
-A brief description of the role goes here.
+This role is used to recreate an EC2 EBS volume from snapshot.  It will detach the running EBS volume and recreate it from a defined snapshot ID.
+
+This would primarily be used in tests where a snapshot of a pristine VM is made and need to be restored after modifications.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+AWS credentials has to be defined.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    aws_host: my.server.name
+    
+FQDN of the server    
+    
+    aws_inventory_name: myservername
+    
+Short inventory name    
+    
+    aws_host_id:
+    
+AWS EC2 ID    
+    
+    aws_snapshot_id:
+    
+AWS Snapshot ID  
+    
+    aws_device_name: /dev/xvda
+    
+Mount point for EBS    
+    
+    aws_new_volume_type: gp2
+    
+EBS type when recreated    
+
+    aws_access_key:
+    aws_secret_key:
+    aws_region: us-west-2
+    
+AWS Credentials     
 
 Dependencies
 ------------
@@ -21,11 +51,11 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+You have to defined several variables for this role to work.  It is assume you know how to look at the documentation and source code.  This role is not that complicated, it has been tested to work.
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: irmoobear.aws_recreate_ec2_from_snapshot }
 
 License
 -------

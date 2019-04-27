@@ -6,3 +6,6 @@ aws_host_id:
 aws_snapshot_id:
 aws_device_name: /dev/xvda
 aws_new_volume_type: gp2
+aws_access_key:
+aws_secret_key:
+aws_region: us-west-2
