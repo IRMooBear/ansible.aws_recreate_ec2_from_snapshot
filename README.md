@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/IRMooBear/ansible.aws_recreate_ec2_from_snapshot.svg?branch=master)](https://travis-ci.org/IRMooBear/ansible.aws_recreate_ec2_from_snapshot)
+
 AWS recreate EC2 from snapshot
 =========
 
